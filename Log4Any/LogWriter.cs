@@ -23,7 +23,6 @@ namespace Log4Any
     public class LogWriter
     {
         private static ILog _logger;
-        private string _dateTimeFormat;
         private Type _type;
 
         static LogWriter()
@@ -38,44 +37,15 @@ namespace Log4Any
         /// <param name="type">type of class</param>
         public LogWriter(Type type)
         {
+            _type = type;
             _logger = LogManager.GetLogger(type);
-
-            // Default value
-            _dateTimeFormat = "YYYY-mm-dd hh:mm:ss";
-        }
-
-        /// <summary>
-        /// Constructor with two arguments. <para />
-        /// NOTE: if dateTimeFormat is set to empty or null, it will not be printed.
-        /// </summary>
-        /// <param name="type">type of class</param>
-        /// <param name="dateTimeFormat">format of date time.</param>
-        public LogWriter(Type type, string dateTimeFormat)
-        {
-            _logger = LogManager.GetLogger(type);
-
-            _dateTimeFormat = dateTimeFormat;
-        }
-
-        private string AppendDateTimeIfExists(string message)
-        {
-            var msg = new StringBuilder();
-
-            // If there's no _dateTimeFormat,
-            // then it's assumed that user doesn't wish to see it.
-            if (!string.IsNullOrEmpty(_dateTimeFormat))
-            {
-                msg.Append("[").Append(DateTime.Now.ToString()).Append("] ");
-            }
-
-            return msg.Append(message).ToString();
         }
 
         /// <summary>
         /// Print Verbose message.
         /// </summary>
         /// <param name="message">message</param>
-        public void Verbose(string message) => _logger.Verbose(_type.DeclaringType, AppendDateTimeIfExists(message));
+        public void Verbose(string message) => _logger.Verbose(_type.DeclaringType, message);
 
         /// <summary>
         /// Prints formatted Verbose message <para />
@@ -83,14 +53,13 @@ namespace Log4Any
         /// </summary>
         /// <param name="format">format.</param>
         /// <param name="args">arguments</param>
-        public void VerboseFormat(string format, params object[] args)
-            => _logger.VerboseFormat(_type.DeclaringType, args);
+        public void VerboseFormat(string format, params object[] args) => _logger.VerboseFormat(_type, args);
 
         /// <summary>
         /// Print Trace message.
         /// </summary>
         /// <param name="message">message</param>
-        public void Trace(string message) => _logger.Trace(_type.DeclaringType, AppendDateTimeIfExists(message));
+        public void Trace(string message) => _logger.Trace(_type.DeclaringType, message);
 
         /// <summary>
         /// Prints formatted Trace message <para />
@@ -98,14 +67,13 @@ namespace Log4Any
         /// </summary>
         /// <param name="format">format.</param>
         /// <param name="args">arguments</param>
-        public void TraceFormat(string format, params object[] args) 
-            => _logger.TraceFormat(_type.DeclaringType, format, args);
+        public void TraceFormat(string format, params object[] args) => _logger.TraceFormat(_type, format, args);
 
         /// <summary>
         /// Print Debug message.
         /// </summary>
         /// <param name="message">message</param>
-        public void Debug(string message) => _logger.Debug(AppendDateTimeIfExists(message));
+        public void Debug(string message) => _logger.Debug(message);
 
         /// <summary>
         /// Prints formatted Debug message <para />
@@ -119,7 +87,7 @@ namespace Log4Any
         /// Print Info message.
         /// </summary>
         /// <param name="message"></param>
-        public void Info(string message) => _logger.Info(AppendDateTimeIfExists(message));
+        public void Info(string message) => _logger.Info(message);
 
         /// <summary>
         /// Prints formatted Info message <para />
@@ -133,7 +101,7 @@ namespace Log4Any
         /// Prints Warn message.
         /// </summary>
         /// <param name="message">message</param>
-        public void Warn(string message) => _logger.Warn(AppendDateTimeIfExists(message));
+        public void Warn(string message) => _logger.Warn(message);
 
         /// <summary>
         /// Prints formatted Warn message <para />
@@ -147,7 +115,7 @@ namespace Log4Any
         /// Prints Error message.
         /// </summary>
         /// <param name="message">message</param>
-        public void Error(string message) => _logger.Error(AppendDateTimeIfExists(message));
+        public void Error(string message) => _logger.Error(message);
 
         /// <summary>
         /// Prints formatted Error message <para />
@@ -161,7 +129,7 @@ namespace Log4Any
         /// Prints Fatal message. Use this when thing went even worse than ERROR.
         /// </summary>
         /// <param name="message">message</param>
-        public void Fatal(string message) => _logger.Fatal(AppendDateTimeIfExists(message));
+        public void Fatal(string message) => _logger.Fatal(message);
 
         /// <summary>
         /// Prints formatted Fatal message <para />

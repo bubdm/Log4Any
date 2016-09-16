@@ -28,6 +28,7 @@ namespace TestApplication
             var warn = string.Format(format, "Warn");
             var error = string.Format(format, "Error");
             var fatal = string.Format(format, "Fatal");
+            var type = GetType();
             #endregion
 
             _logWriter = new LogWriter( GetType() );

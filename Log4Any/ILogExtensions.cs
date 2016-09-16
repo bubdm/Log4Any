@@ -39,7 +39,14 @@ namespace Log4Any
 
         public static void Trace(this ILog log, Type callerStackBoundaryDeclaringType, object message, Exception exception)
         {
-            _log.Logger.Log(callerStackBoundaryDeclaringType, Level.Trace, message, exception);
+            try
+            {
+                _log.Logger.Log(callerStackBoundaryDeclaringType, Level.Trace, message, exception);
+            }
+            catch(Exception ex)
+            {
+                _log.Error("Error in Trace method.", ex);
+            }
         }
 
         public static void Trace(this ILog log, Type callerStackBoundaryDeclaringType, object message)
