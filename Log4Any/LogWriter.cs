@@ -24,6 +24,7 @@ namespace Log4Any
     {
         private static ILog _logger;
         private string _dateTimeFormat;
+        private Type _type;
 
         static LogWriter()
         {
@@ -69,6 +70,36 @@ namespace Log4Any
 
             return msg.Append(message).ToString();
         }
+
+        /// <summary>
+        /// Print Verbose message.
+        /// </summary>
+        /// <param name="message">message</param>
+        public void Verbose(string message) => _logger.Verbose(_type.DeclaringType, AppendDateTimeIfExists(message));
+
+        /// <summary>
+        /// Prints formatted Verbose message <para />
+        /// Example: _logWriter.VerboseFormat("foo: {0}", bar);
+        /// </summary>
+        /// <param name="format">format.</param>
+        /// <param name="args">arguments</param>
+        public void VerboseFormat(string format, params object[] args)
+            => _logger.VerboseFormat(_type.DeclaringType, args);
+
+        /// <summary>
+        /// Print Trace message.
+        /// </summary>
+        /// <param name="message">message</param>
+        public void Trace(string message) => _logger.Trace(_type.DeclaringType, AppendDateTimeIfExists(message));
+
+        /// <summary>
+        /// Prints formatted Trace message <para />
+        /// Example: _logWriter.TraceFormat("foo: {0}", bar);
+        /// </summary>
+        /// <param name="format">format.</param>
+        /// <param name="args">arguments</param>
+        public void TraceFormat(string format, params object[] args) 
+            => _logger.TraceFormat(_type.DeclaringType, format, args);
 
         /// <summary>
         /// Print Debug message.
